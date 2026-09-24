@@ -1,0 +1,553 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>NovaVideo - Video Utility</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed-variant": "#004c6c",
+                      "error-container": "#93000a",
+                      "surface-container": "#201f1f",
+                      "on-tertiary-fixed": "#001e2e",
+                      "primary-fixed": "#ffdcc3",
+                      "on-error-container": "#ffdad6",
+                      "on-primary": "#4d2600",
+                      "primary-container": "#ff8c00",
+                      "on-primary-fixed-variant": "#6e3900",
+                      "surface-container-high": "#2a2a2a",
+                      "surface-container-highest": "#353534",
+                      "outline-variant": "#564334",
+                      "surface-tint": "#ffb77d",
+                      "error": "#ffb4ab",
+                      "background": "#131313",
+                      "on-secondary-container": "#684100",
+                      "secondary": "#ffcb8d",
+                      "surface": "#131313",
+                      "primary-fixed-dim": "#ffb77d",
+                      "tertiary-fixed": "#c7e7ff",
+                      "surface-variant": "#353534",
+                      "inverse-primary": "#904d00",
+                      "surface-container-low": "#1c1b1b",
+                      "on-tertiary-container": "#004360",
+                      "tertiary-fixed-dim": "#85cfff",
+                      "on-primary-container": "#623200",
+                      "secondary-fixed-dim": "#ffb95c",
+                      "on-secondary-fixed-variant": "#653e00",
+                      "tertiary": "#85cfff",
+                      "secondary-container": "#ffa504",
+                      "on-background": "#e5e2e1",
+                      "on-secondary-fixed": "#2a1700",
+                      "outline": "#a48c7a",
+                      "inverse-on-surface": "#313030",
+                      "primary": "#ffb77d",
+                      "inverse-surface": "#e5e2e1",
+                      "surface-container-lowest": "#0e0e0e",
+                      "surface-bright": "#393939",
+                      "surface-dim": "#131313",
+                      "on-tertiary": "#00344c",
+                      "on-surface": "#e5e2e1",
+                      "on-secondary": "#462a00",
+                      "on-surface-variant": "#ddc1ae",
+                      "on-error": "#690005",
+                      "secondary-fixed": "#ffddb7",
+                      "on-primary-fixed": "#2f1500",
+                      "tertiary-container": "#00b5fc"
+              },
+              "borderRadius": {
+                      "DEFAULT": "1rem",
+                      "lg": "2rem",
+                      "xl": "3rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "base": "8px",
+                      "xl": "64px",
+                      "xs": "4px",
+                      "sm": "12px",
+                      "gutter": "20px",
+                      "lg": "40px",
+                      "md": "24px",
+                      "container-max": "1200px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "label-sm": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "display-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "title-md": [
+                              "Plus Jakarta Sans"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "title-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-surface');
+            -webkit-font-smoothing: antialiased;
+        }
+        .orange-gradient {
+            background: linear-gradient(135deg, #FF8C00 0%, #FFA504 100%);
+        }
+        .glow-shadow {
+            box-shadow: 0px 8px 32px rgba(255, 140, 0, 0.25);
+        }
+        .soft-shadow {
+            box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.5);
+        }
+      </style>
+</head>
+<body class="min-h-screen flex flex-col font-body-md text-body-md" style="background-color: rgb(0, 0, 0);">
+<!-- TopAppBar -->
+<header class="docked full-width top-0 dark:bg-background z-40 relative bg-surface-container-lowest">
+<div class="flex justify-between items-center w-full px-gutter py-md max-w-container-max mx-auto">
+<div class="flex items-center gap-sm">
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary dark:text-primary md:font-headline-lg md:text-headline-lg">NovaVideo</span>
+</div>
+<div class="flex items-center gap-sm md:gap-md">
+<!-- Desktop Navigation Hub (replaces bottom nav on large screens) -->
+<nav class="hidden md:flex bg-surface-container-high rounded-full p-1 gap-2 items-center">
+<a href="#download-form" class="flex items-center gap-2 px-6 py-3 rounded-full orange-gradient text-on-primary-container font-label-sm text-label-sm font-bold glow-shadow hover:brightness-110 transition-all duration-150 transform hover:scale-95">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">download</span>
+Download video
+</a>
+<a href="#convert-form" class="flex items-center gap-2 px-6 py-3 rounded-full text-on-surface-variant font-label-sm text-label-sm font-bold hover:bg-surface-container-highest transition-colors duration-150">
+<span class="material-symbols-outlined">settings_input_component</span>
+To PSP format
+</a>
+</nav>
+<div class="flex items-center gap-2">
+<button id="disconnect-btn" title="End session and permanently wipe all files" class="flex items-center gap-1.5 px-4 py-2 rounded-full border border-red-500/40 text-red-400 hover:bg-red-500/20 text-xs font-bold transition-all shadow-sm">
+<span class="material-symbols-outlined text-base">power_settings_new</span>
+<span class="hidden sm:inline">Disconnect &amp; Clear</span>
+</button>
+<img alt="User profile" class="w-10 h-10 rounded-full object-cover ml-2 border border-outline-variant" data-alt="A minimalist generic user avatar profile picture, smooth flat design, dark grey background with light silhouette, 64x64 resolution, optimized for UI context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfmztUjjGfePI_KdvhBSuMfcy3K7c81SayXhQbQ9H2gRq1G7eByAhgDQVOFla-GzBEIaXVUpPI28lcwDG0UdujvRn1dkHY7uri_IUNGkjw9QkgTx_8awZsF_YPXidJTPH2WXBSGmCn9IGLVMRmsB1vU5EpD-M-F1oyjHTlIwr-RkRJcz2KAKSjBflWGuYL-mvoZA4I5UrVV8vKTbyfIrz7_fNGJWG0-DOxw9UGBopO-7wcAWzmSdw7rA">
+</div>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-grow flex flex-col items-center justify-center px-gutter py-xl max-w-container-max mx-auto w-full gap-xl">
+  <section class="w-full max-w-5xl flex flex-col gap-lg items-center text-center">
+    <h1 class="font-display-lg text-display-lg md:text-[64px] md:leading-[72px] text-on-surface">Effortless Media Capture.</h1>
+    <p class="text-on-surface-variant max-w-xl mx-auto">Download from YouTube or convert local video files into a PSP-ready MP4 using isolated, private per-user storage.</p>
+
+    {% if success %}
+      <div class="w-full max-w-4xl rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-left text-emerald-200">
+        {{ success }}
+      </div>
+    {% endif %}
+
+    {% if error %}
+      <div class="w-full max-w-4xl rounded-2xl border border-red-500/30 bg-red-500/10 p-4 text-left text-red-200">
+        {{ error }}
+      </div>
+    {% endif %}
+
+    <div class="grid w-full grid-cols-1 gap-md lg:grid-cols-2">
+      <!-- Download Form -->
+      <form id="download-form" method="post" action="/download" class="rounded-3xl border border-outline-variant/30 bg-surface-container p-md flex flex-col gap-md text-left shadow-lg shadow-black/20">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="flex items-center gap-2">
+              <p class="text-label-sm text-primary uppercase tracking-[0.2em]">Download</p>
+              <span class="text-xs px-2.5 py-0.5 rounded-full border border-primary/40 bg-primary/10 text-primary font-mono font-semibold">
+                {{ quota.downloads_count }} / {{ quota.downloads_max }} files
+              </span>
+            </div>
+            <h2 class="mt-2 font-title-md text-title-md text-on-surface">YouTube downloader</h2>
+          </div>
+          <span class="material-symbols-outlined text-primary text-3xl">download</span>
+        </div>
+
+        {% if quota.downloads_remaining <= 0 %}
+          <div class="rounded-2xl border border-amber-500/40 bg-amber-500/10 p-3 text-xs text-amber-200 flex items-center gap-2">
+            <span class="material-symbols-outlined text-base">info</span>
+            <span>Download quota reached ({{ quota.downloads_max }}/{{ quota.downloads_max }}). Delete a downloaded file below to download more.</span>
+          </div>
+        {% endif %}
+
+        <label class="flex flex-col gap-2 text-sm text-on-surface-variant">
+          Video URL
+          <input name="url" type="url" required class="h-12 rounded-2xl border border-outline-variant bg-surface-container-lowest px-4 text-on-surface placeholder:text-on-surface-variant focus:border-primary focus:outline-none" placeholder="https://www.youtube.com/watch?v=..." />
+        </label>
+
+        <div class="flex flex-col gap-2">
+          <label class="text-sm text-on-surface-variant">Quality</label>
+          <div class="grid grid-cols-1 gap-2 sm:grid-cols-3">
+            <label class="flex items-center gap-2 rounded-2xl border border-outline-variant bg-surface-container-lowest px-3 py-2 text-on-surface">
+              <input type="radio" name="quality" value="720p" checked>
+              720p MP4
+            </label>
+            <label class="flex items-center gap-2 rounded-2xl border border-outline-variant bg-surface-container-lowest px-3 py-2 text-on-surface">
+              <input type="radio" name="quality" value="1080p">
+              1080p MP4
+            </label>
+            <label class="flex items-center gap-2 rounded-2xl border border-outline-variant bg-surface-container-lowest px-3 py-2 text-on-surface">
+              <input type="radio" name="quality" value="audio_m4a">
+              Audio only (M4A)
+            </label>
+          </div>
+        </div>
+
+        <button type="submit" {% if quota.downloads_remaining <= 0 %}disabled{% endif %} class="orange-gradient mt-2 rounded-full px-5 py-3 font-bold text-on-primary-container shadow-lg shadow-orange-950/40 hover:brightness-110 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed">
+          {% if quota.downloads_remaining <= 0 %}Download limit reached (3 max){% else %}Download video{% endif %}
+        </button>
+        <div id="download-progress" class="hidden rounded-2xl border border-outline-variant/30 bg-surface-container-lowest p-3" aria-live="polite">
+          <div class="mb-2 flex justify-between gap-3 text-sm text-on-surface-variant">
+            <span data-progress-message>Waiting to start...</span>
+            <span data-progress-percent>0%</span>
+          </div>
+          <progress data-progress-bar class="h-2 w-full accent-primary" max="100" value="0"></progress>
+        </div>
+      </form>
+
+      <!-- Convert Form -->
+      <form id="convert-form" method="post" action="/convert" enctype="multipart/form-data" class="rounded-3xl border border-outline-variant/30 bg-surface-container p-md flex flex-col gap-md text-left shadow-lg shadow-black/20">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="flex items-center gap-2">
+              <p class="text-label-sm text-secondary uppercase tracking-[0.2em]">Convert</p>
+              <span class="text-xs px-2.5 py-0.5 rounded-full border border-secondary/40 bg-secondary/10 text-secondary font-mono font-semibold">
+                {{ quota.conversions_count }} / {{ quota.conversions_max }} files
+              </span>
+            </div>
+            <h2 class="mt-2 font-title-md text-title-md text-on-surface">PSP MP4 conversion</h2>
+          </div>
+          <span class="material-symbols-outlined text-secondary text-3xl">smart_display</span>
+        </div>
+
+        {% if quota.conversions_remaining <= 0 %}
+          <div class="rounded-2xl border border-amber-500/40 bg-amber-500/10 p-3 text-xs text-amber-200 flex items-center gap-2">
+            <span class="material-symbols-outlined text-base">info</span>
+            <span>Conversion quota reached ({{ quota.conversions_max }}/{{ quota.conversions_max }}). Delete a converted file below to convert more.</span>
+          </div>
+        {% endif %}
+
+        <label class="flex flex-col gap-2 text-sm text-on-surface-variant">
+          <div class="flex items-center justify-between">
+            <span>Upload a video file</span>
+            <span class="text-xs text-secondary/90 font-mono font-bold">Max size: 430 MB</span>
+          </div>
+          <input id="video-file-input" name="video_file" type="file" accept="video/*" required class="block w-full rounded-2xl border border-dashed border-outline-variant bg-surface-container-lowest p-3 text-on-surface file:mr-3 file:rounded-full file:border-0 file:bg-primary file:px-4 file:py-2 file:font-bold file:text-on-primary-container" />
+        </label>
+        <div id="file-size-error" class="hidden rounded-2xl border border-red-500/40 bg-red-500/10 p-3 text-xs text-red-200"></div>
+
+        <div class="rounded-2xl border border-outline-variant/30 bg-surface-container-lowest p-3 text-sm text-on-surface-variant">
+          Output profile: 480×272, H.264 baseline 1.3, 30 fps, AAC audio 160 kbps (PSP preset).
+        </div>
+
+        <button type="submit" {% if quota.conversions_remaining <= 0 %}disabled{% endif %} class="mt-2 bg-secondary-container text-on-secondary-container rounded-full px-5 py-3 font-bold hover:brightness-110 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed">
+          {% if quota.conversions_remaining <= 0 %}Conversion limit reached (5 max){% else %}Convert to PSP MP4{% endif %}
+        </button>
+        <div id="convert-progress" class="hidden rounded-2xl border border-outline-variant/30 bg-surface-container-lowest p-3" aria-live="polite">
+          <div class="mb-2 flex justify-between gap-3 text-sm text-on-surface-variant">
+            <span data-progress-message>Waiting to start...</span>
+            <span data-progress-percent>0%</span>
+          </div>
+          <progress data-progress-bar class="h-2 w-full accent-secondary" max="100" value="0"></progress>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Recent Files Canvas -->
+  <section class="w-full max-w-5xl flex flex-col gap-md">
+    <div class="grid gap-md md:grid-cols-2">
+      <!-- Recent Downloads -->
+      <div class="rounded-3xl border border-outline-variant/30 bg-surface-container p-md">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-title-md text-title-md text-on-surface">Your downloads</h3>
+          <span class="text-xs font-mono text-primary font-semibold">{{ quota.downloads_count }} / {{ quota.downloads_max }}</span>
+        </div>
+        {% if downloads %}
+          <ul class="space-y-2">
+            {% for item in downloads %}
+              <li class="flex items-center justify-between gap-3 rounded-2xl border border-outline-variant/20 bg-surface-container-lowest p-3 text-sm text-on-surface-variant group">
+                <a class="flex items-center gap-2 hover:text-primary truncate flex-grow" href="/files/downloads/{{ item | urlencode }}" download="{{ item }}">
+                  <span class="material-symbols-outlined text-primary text-base flex-shrink-0">download</span>
+                  <span class="truncate" title="{{ item }}">{{ item }}</span>
+                </a>
+                <button type="button" class="text-red-400 hover:text-red-300 p-1.5 rounded-lg hover:bg-red-500/10 transition-colors flex-shrink-0" data-delete-folder="downloads" data-delete-file="{{ item }}" title="Delete file to free up download quota">
+                  <span class="material-symbols-outlined text-lg">delete</span>
+                </button>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-on-surface-variant">No downloaded files yet in this session.</p>
+        {% endif %}
+      </div>
+
+      <!-- Converted Videos -->
+      <div class="rounded-3xl border border-outline-variant/30 bg-surface-container p-md">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-title-md text-title-md text-on-surface">Your converted videos</h3>
+          <span class="text-xs font-mono text-secondary font-semibold">{{ quota.conversions_count }} / {{ quota.conversions_max }}</span>
+        </div>
+        {% if converted %}
+          <ul class="space-y-2">
+            {% for item in converted %}
+              <li class="flex items-center justify-between gap-3 rounded-2xl border border-outline-variant/20 bg-surface-container-lowest p-3 text-sm text-on-surface-variant group">
+                <a class="flex items-center gap-2 hover:text-secondary truncate flex-grow" href="/files/converted/{{ item | urlencode }}" download="{{ item }}">
+                  <span class="material-symbols-outlined text-secondary text-base flex-shrink-0">movie</span>
+                  <span class="truncate" title="{{ item }}">{{ item }}</span>
+                </a>
+                <button type="button" class="text-red-400 hover:text-red-300 p-1.5 rounded-lg hover:bg-red-500/10 transition-colors flex-shrink-0" data-delete-folder="converted" data-delete-file="{{ item }}" title="Delete file to free up conversion quota">
+                  <span class="material-symbols-outlined text-lg">delete</span>
+                </button>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-on-surface-variant">No converted files yet in this session.</p>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-center gap-md items-center px-gutter pb-8 pt-4 bg-surface-container-low dark:bg-surface-container-low rounded-t-lg shadow-lg shadow-[0_-4px_24px_rgba(0,0,0,0.5)]">
+<a href="#download-form" class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-6 py-2 scale-98 duration-200 transition-all w-1/2">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">download</span>
+<span class="font-label-sm text-label-sm font-bold">Download video</span>
+</a>
+<a href="#convert-form" class="flex flex-col items-center justify-center text-on-surface-variant px-6 py-2 hover:text-primary transition-all w-1/2">
+<span class="material-symbols-outlined mb-1">settings_input_component</span>
+<span class="font-label-sm text-label-sm font-bold">To PSP format</span>
+</a>
+</nav>
+
+<!-- Footer -->
+<footer class="w-full py-xl px-gutter flex flex-col md:flex-row justify-between items-center gap-md border-t border-outline-variant dark:bg-background mt-auto pb-32 md:pb-xl bg-surface-container-lowest">
+<div class="flex items-center gap-sm">
+<span class="font-headline-lg text-primary">NovaVideo</span>
+</div>
+<p class="text-on-surface-variant font-body-md text-body-md text-center md:text-left">© 2024 NovaVideo Utilities. All rights reserved.</p>
+<div class="flex flex-wrap justify-center gap-md text-on-surface-variant font-body-md text-body-md">
+<a class="hover:text-primary underline transition-all opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="hover:text-primary underline transition-all opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+<a class="hover:text-primary underline transition-all opacity-80 hover:opacity-100" href="#">Contact Support</a>
+</div>
+</footer>
+
+<script>
+  const MAX_UPLOAD_BYTES = 430 * 1024 * 1024; // 430 MB
+
+  // On page load, clear reload and downloading flags
+  sessionStorage.removeItem('is_reloading');
+  sessionStorage.removeItem('is_downloading');
+
+  function safeReload() {
+    sessionStorage.setItem('is_reloading', 'true');
+    window.location.reload();
+  }
+
+  // Prevent disconnect beacon when clicking file download links
+  document.addEventListener('click', (e) => {
+    const downloadLink = e.target.closest('a[download]');
+    if (downloadLink) {
+      sessionStorage.setItem('is_downloading', 'true');
+      setTimeout(() => sessionStorage.removeItem('is_downloading'), 20000);
+    }
+  });
+
+  // Heartbeat to keep session alive while page is open
+  setInterval(() => {
+    fetch('/session/heartbeat', { method: 'POST' }).catch(() => {});
+  }, 25000);
+
+  // Send disconnect intent beacon on tab/page close
+  window.addEventListener('pagehide', () => {
+    if (!sessionStorage.getItem('is_reloading') && !sessionStorage.getItem('is_downloading')) {
+      navigator.sendBeacon('/session/disconnect-intent');
+    }
+  });
+
+  // Client-side file size validation for 430 MB limit
+  const fileInput = document.getElementById('video-file-input');
+  const fileSizeError = document.getElementById('file-size-error');
+  if (fileInput) {
+    fileInput.addEventListener('change', () => {
+      fileSizeError.classList.add('hidden');
+      fileSizeError.textContent = '';
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        if (file.size > MAX_UPLOAD_BYTES) {
+          const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
+          fileSizeError.textContent = `Selected file is too large (${sizeMb} MB). Maximum allowed upload size is 430 MB.`;
+          fileSizeError.classList.remove('hidden');
+          fileInput.value = '';
+        }
+      }
+    });
+  }
+
+  // Explicit disconnect button
+  document.getElementById('disconnect-btn')?.addEventListener('click', async (e) => {
+    e.preventDefault();
+    if (confirm('Disconnect and clear all files? Any downloaded, converted, or uploaded files will be permanently deleted.')) {
+      try {
+        await fetch('/session/disconnect', { method: 'POST' });
+      } catch (e) {}
+      safeReload();
+    }
+  });
+
+  // Delete file handlers to free up quota
+  document.querySelectorAll('[data-delete-file]').forEach((btn) => {
+    btn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const folder = btn.getAttribute('data-delete-folder');
+      const filename = btn.getAttribute('data-delete-file');
+      if (confirm(`Delete "${filename}"? This will free up your quota.`)) {
+        btn.disabled = true;
+        try {
+          const res = await fetch(`/files/${folder}/${encodeURIComponent(filename)}/delete`, { method: 'POST' });
+          if (res.ok) {
+            safeReload();
+          } else {
+            const data = await res.json();
+            alert(data.error || 'Failed to delete file.');
+            btn.disabled = false;
+          }
+        } catch (err) {
+          alert('Error deleting file: ' + err.message);
+          btn.disabled = false;
+        }
+      }
+    });
+  });
+
+  function pollProgress(form, job, jobId) {
+    const panel = document.getElementById(`${job}-progress`);
+    const bar = panel.querySelector('[data-progress-bar]');
+    const message = panel.querySelector('[data-progress-message]');
+    const percent = panel.querySelector('[data-progress-percent]');
+    panel.classList.remove('hidden');
+
+    const poll = async () => {
+      const response = await fetch(`/progress/${jobId}`);
+      if (!response.ok) {
+        throw new Error(`Job status error (${response.status})`);
+      }
+      const state = await response.json();
+      const value = Number(state.percent || 0);
+      bar.value = value;
+      percent.textContent = `${value.toFixed(1)}%`;
+      message.textContent = state.message || 'Working...';
+
+      if (state.status === 'completed') {
+        message.textContent = state.result ? `Finished: ${state.result}` : 'Finished.';
+        safeReload();
+      } else if (state.status === 'failed') {
+        message.textContent = `Failed: ${state.error || 'Unknown error'}`;
+        form.querySelector('button[type="submit"]').disabled = false;
+      } else {
+        window.setTimeout(poll, 500);
+      }
+    };
+    poll().catch((error) => {
+      message.textContent = `Progress unavailable: ${error.message}`;
+      form.querySelector('button[type="submit"]').disabled = false;
+    });
+  }
+
+  for (const form of document.querySelectorAll('form[action="/download"], form[action="/convert"]')) {
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const button = form.querySelector('button[type="submit"]');
+      button.disabled = true;
+      const job = form.action.endsWith('/download') ? 'download' : 'convert';
+
+      if (job === 'convert' && fileInput?.files?.length > 0) {
+        if (fileInput.files[0].size > MAX_UPLOAD_BYTES) {
+          alert('File size exceeds the 430 MB limit.');
+          button.disabled = false;
+          return;
+        }
+      }
+
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form)
+      });
+      const result = await response.json();
+      if (!response.ok) {
+        document.getElementById(`${job}-progress`).classList.remove('hidden');
+        document.querySelector(`#${job}-progress [data-progress-message]`).textContent = result.error || 'Request failed';
+        button.disabled = false;
+        return;
+      }
+      pollProgress(form, job, result.job_id);
+    });
+  }
+</script>
+
+</body></html>

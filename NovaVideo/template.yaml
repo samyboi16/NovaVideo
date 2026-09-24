@@ -1,0 +1,42 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  NovaVideo - YouTube Downloader & PSP Video Converter on AWS Lambda.
+  Includes isolated per-user storage, 430MB upload limits, quotas, and automatic cleanup.
+
+Globals:
+  Function:
+    Timeout: 900
+    MemorySize: 3008
+
+Resources:
+  NovaVideoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      PackageType: Image
+      EphemeralStorage:
+        Size: 5120  # 5 GB /tmp storage for 430MB uploads & conversions
+      Environment:
+        Variables:
+          STORAGE_DIR: /tmp/psp_converter
+          SECRET_KEY: production-secret-key-change-me
+          SESSION_TIMEOUT_SECONDS: "300"
+      FunctionUrlConfig:
+        AuthType: NONE
+        Cors:
+          AllowOrigins:
+            - '*'
+          AllowMethods:
+            - GET
+            - POST
+          AllowHeaders:
+            - '*'
+    Metadata:
+      DockerTag: latest
+      DockerContext: .
+      Dockerfile: Dockerfile
+
+Outputs:
+  NovaVideoFunctionUrl:
+    Description: "Public Lambda Function URL for NovaVideo"
+    Value: !GetAtt NovaVideoFunctionUrl.FunctionUrl
